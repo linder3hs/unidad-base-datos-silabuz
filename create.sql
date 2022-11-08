@@ -57,7 +57,36 @@ values
 (15, 19, 14, 2);
 
 insert into notas (nota_1, nota_2, nota_3, idAlumno) 
-values  (18, 12, 18, 3), (15, 19, 14, 2);
+values  (18, 12, 18, 1), (15, 19, 14, 2);
 
 select * from notas;
 
+alter table notas add column nota_4 float not null;
+
+-- Agregar una columan llamada mensaje a la tabla notas que por
+-- defecto diga el texto "sin comentarios"
+alter table notas add column 
+mensaje varchar(255) not null default "Sin comentario";
+
+-- Modicar mensaje de 255 a 500
+alter table notas modify column mensaje varchar(500);
+describe notas;
+
+-- DROP COLUMN a notas_4
+alter table notas drop nota_4;
+
+-- drop table notas;
+-- drop table alumnos;
+-- drop table aulas;
+
+select * from notas;
+
+create view alumnos_notas as (
+	select concat(a.nombre, " ", a.apellido) as "Nombre Completo",
+    (n.nota_1 + n.nota_2 + n.nota_3)/3 as "Promedio"
+    from notas n 
+    join alumnos a 
+    on n.idAlumno = a.id
+);
+
+select * from alumnos_notas;
